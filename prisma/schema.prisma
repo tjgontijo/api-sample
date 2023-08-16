@@ -11,11 +11,35 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-  name String
-  email String @unique
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
   password_hash String
-  created_at DateTime @default(now())
-   
+  created_at    DateTime @default(now())
+
   @@map("users")
+}
+
+model ThematicArea {
+  id         String   @id @default(uuid())
+  short_name String   @unique
+  name       String   @unique
+  percentage Int
+  created_at DateTime @default(now())
+
+  actions Action[]
+
+  @@map("thematic_areas")
+}
+
+model Action {
+  id         String   @id @default(uuid())
+  name       String   @unique
+  percentage Int
+  created_at DateTime @default(now())
+
+  thematic_area    ThematicArea @relation(fields: [thematic_area_id], references: [id])
+  thematic_area_id String
+
+  @@map("actions")
 }
