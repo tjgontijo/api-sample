@@ -35,7 +35,6 @@ model ThematicArea {
 model Action {
   id         String   @id @default(uuid())
   name       String   @unique
-  percentage Int
   created_at DateTime @default(now())
 
   thematic_area    ThematicArea @relation(fields: [thematic_area_id], references: [id])
