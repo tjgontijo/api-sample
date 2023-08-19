@@ -2,10 +2,12 @@ version: '3'
 
 services:
   database:
-    image: bitnami/postgresql
+    image: postgres
+    volumes:
+      - C:\Users\tjgon\www\api-sample\data\postgresql:/var/lib/postgresql/data
     ports:
       - 5432:5432
     environment:
-      - POSTGRESQL_USERNAME=docker
-      - POSTGRESQL_PASSWORD=docker
-      - POSTGRESQL_DATABASE=apiSample
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=apiSample
