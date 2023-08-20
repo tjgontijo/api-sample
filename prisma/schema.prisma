@@ -7,12 +7,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model State {
+  id        String @id @default(uuid())
+  shortName String
+  name      String
+  region    String
+  Plan      Plan[]
+
+  @@map(name: "state")
+}
+
+model Role {
+  id                 String               @id @default(uuid())
+  name               String
+  permissions        Permission[]         @relation("RoleToPermission")
+  User               User[]
+  RolesOnPermissions RolesOnPermissions[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id                 String               @id @default(uuid())
+  resource           String
+  permission         String
+  roles              Role[]               @relation("RoleToPermission")
+  RolesOnPermissions RolesOnPermissions[]
+
+  @@map("permissions")
+}
+
+model RolesOnPermissions {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+}
+
 model User {
   id            String   @id @default(uuid())
+  roleId        String
   name          String
   email         String   @unique
   password_hash String
   created_at    DateTime @default(now())
+  roles         Role     @relation(fields: [roleId], references: [id])
 
   @@map("users")
 }
@@ -21,21 +62,161 @@ model ThematicArea {
   id         String   @id @default(uuid())
   short_name String   @unique
   name       String   @unique
-  percentage Int
   created_at DateTime @default(now())
 
   actions Action[]
+  Plan    Plan[]
 
   @@map("thematic_areas")
 }
 
 model Action {
-  id         String   @id @default(uuid())
-  name       String   @unique
-  created_at DateTime @default(now())
+  id             String   @id @default(uuid())
+  thematicAreaId String
+  name           String   @unique
+  created_at     DateTime @default(now())
 
-  thematic_area    ThematicArea @relation(fields: [thematic_area_id], references: [id])
-  thematic_area_id String
+  thematicArea ThematicArea @relation(fields: [thematicAreaId], references: [id])
 
   @@map("actions")
+}
+
+model NationalPlan {
+  id               String             @id @default(uuid())
+  name             String
+  description      String
+  NationalPlanGoal NationalPlanGoal[]
+
+  @@map("national_plans")
+}
+
+model NationalPlanGoal {
+  id             String @id @default(uuid())
+  nationalPlanId String
+  number         Int
+  name           String
+
+  nationalPlan NationalPlan @relation(fields: [nationalPlanId], references: [id])
+  ActionPlan   ActionPlan[]
+}
+
+model TypeOfExpense {
+  id       String     @id @default(uuid())
+  name     String
+  ItemType ItemType[]
+
+  @@map(name: "types_of_expenses")
+}
+
+model ItemType {
+  id              String        @id @default(uuid())
+  typeOfExpenseId String
+  name            String
+  typeOfExpense   TypeOfExpense @relation(fields: [typeOfExpenseId], references: [id])
+  ItemGroup       ItemGroup[]
+
+  @@map(name: "items_types")
+}
+
+model ItemGroup {
+  id         String @id @default(uuid())
+  itemTypeId String
+  name       String
+
+  itemType  ItemType    @relation(fields: [itemTypeId], references: [id])
+  ItemClass ItemClass[]
+
+  @@map(name: "items_groups")
+}
+
+model ItemClass {
+  id          String @id @default(uuid())
+  itemGroupId String
+  name        String
+
+  itemGroup ItemGroup @relation(fields: [itemGroupId], references: [id])
+  Item      Item[]
+
+  @@map(name: "items_classes")
+}
+
+model Item {
+  id            String          @id @default(uuid())
+  itemClassId   String
+  name          String
+  itemclass     ItemClass       @relation(fields: [itemClassId], references: [id])
+  TechnicalNote TechnicalNote[]
+  ActionPlan    ActionPlan[]
+
+  @@map(name: "items")
+}
+
+model TechnicalNote {
+  id          String @id @default(uuid())
+  itemId      String
+  name        String
+  description String
+  item        Item   @relation(fields: [itemId], references: [id])
+}
+
+model ImplementationStrategy {
+  id          String @id @default(uuid())
+  diagnosis   String
+  governance  String
+  capacity    String
+  acquisition String
+  Plan        Plan[]
+
+  @@map(name: "implementation_strategies")
+}
+
+model GeneralGoal {
+  id   String @id @default(uuid())
+  name String
+  Plan Plan[]
+
+  @@map(name: "general_goals")
+}
+
+model Plan {
+  id                       String                 @id @default(uuid())
+  generalGoalId            String
+  implementationStrategyId String
+  stateId                  String
+  thematicAreaId           String
+  diagnostic               String
+  justification            String
+  overallGoal              String
+  indicator                String
+  generalGoals             GeneralGoal            @relation(fields: [generalGoalId], references: [id])
+  implementationStrategy   ImplementationStrategy @relation(fields: [implementationStrategyId], references: [id])
+  state                    State                  @relation(fields: [stateId], references: [id])
+  thematicArea             ThematicArea           @relation(fields: [thematicAreaId], references: [id])
+  ActionPlan               ActionPlan[]
+
+  @@map(name: "plans")
+}
+
+model Institution {
+  id         String       @id @default(uuid())
+  name       String
+  ActionPlan ActionPlan[]
+}
+
+model ActionPlan {
+  id                 String           @id @default(uuid())
+  planId             String
+  nationalPlanGoalId String
+  itemId             String
+  institutionId      String
+  plannedQuantity    Decimal
+  plannedValue       Decimal
+  stateGoal          String
+  indicator          String
+  frequency          String
+  indicatorFormula   String
+  plan               Plan             @relation(fields: [planId], references: [id])
+  nationalPlanGoal   NationalPlanGoal @relation(fields: [nationalPlanGoalId], references: [id])
+  item               Item             @relation(fields: [itemId], references: [id])
+  instituition       Institution      @relation(fields: [institutionId], references: [id])
 }
