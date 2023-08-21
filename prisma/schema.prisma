@@ -15,7 +15,7 @@ model State {
   Plan      Plan[]
   User      User[]
 
-  @@map(name: "state")
+  @@map(name: "states")
 }
 
 model Role {
@@ -34,6 +34,7 @@ model Permission {
   permission         String
   roles              Role[]               @relation("RoleToPermission")
   RolesOnPermissions RolesOnPermissions[]
+  UserOnPermissions  UserOnPermissions[]
 
   @@map("permissions")
 }
@@ -45,20 +46,32 @@ model RolesOnPermissions {
   permission   Permission @relation(fields: [permissionId], references: [id])
 
   @@id([roleId, permissionId])
+  @@map("roles_on_permissions")
 }
 
 model User {
-  id            String   @id @default(uuid())
-  roleId        String
-  stateId       String
-  name          String
-  email         String   @unique
-  password_hash String
-  created_at    DateTime @default(now())
-  roles         Role     @relation(fields: [roleId], references: [id])
-  state         State    @relation(fields: [stateId], references: [id])
+  id                String              @id @default(uuid())
+  roleId            String
+  stateId           String
+  name              String
+  email             String              @unique
+  password_hash     String
+  created_at        DateTime            @default(now())
+  roles             Role                @relation(fields: [roleId], references: [id])
+  state             State               @relation(fields: [stateId], references: [id])
+  UserOnPermissions UserOnPermissions[]
 
   @@map("users")
+}
+
+model UserOnPermissions {
+  permissionId String
+  userId       String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@id([userId, permissionId])
+  @@map("users_on_permissions")
 }
 
 model ThematicArea {
@@ -101,6 +114,8 @@ model NationalPlanGoal {
 
   nationalPlan NationalPlan @relation(fields: [nationalPlanId], references: [id])
   ActionPlan   ActionPlan[]
+
+  @@map("national_plan_goals")
 }
 
 model TypeOfExpense {
@@ -149,7 +164,7 @@ model Item {
   name          String
   itemclass     ItemClass       @relation(fields: [itemClassId], references: [id])
   TechnicalNote TechnicalNote[]
-  ActionPlan    ActionPlan[]
+  ItemPlan      ItemPlan[]
 
   @@map(name: "items")
 }
@@ -160,6 +175,8 @@ model TechnicalNote {
   name        String
   description String
   item        Item   @relation(fields: [itemId], references: [id])
+
+  @@map("technical_notes")
 }
 
 model ImplementationStrategy {
@@ -201,25 +218,38 @@ model Plan {
 }
 
 model Institution {
-  id         String       @id @default(uuid())
-  name       String
-  ActionPlan ActionPlan[]
+  id       String     @id @default(uuid())
+  name     String
+  ItemPlan ItemPlan[]
+
+  @@map("institutions")
 }
 
 model ActionPlan {
   id                 String           @id @default(uuid())
   planId             String
   nationalPlanGoalId String
-  itemId             String
-  institutionId      String
-  plannedQuantity    Decimal
-  plannedValue       Decimal
-  stateGoal          String
-  indicator          String
-  frequency          String
-  indicatorFormula   String
   plan               Plan             @relation(fields: [planId], references: [id])
   nationalPlanGoal   NationalPlanGoal @relation(fields: [nationalPlanGoalId], references: [id])
-  item               Item             @relation(fields: [itemId], references: [id])
-  instituition       Institution      @relation(fields: [institutionId], references: [id])
+  ItemPlan           ItemPlan[]
+
+  @@map("actions_plans")
+}
+
+model ItemPlan {
+  id               String      @id @default(uuid())
+  institutionId    String
+  actionPlanId     String
+  itemId           String
+  stateGoal        String
+  indicator        String
+  frequency        String
+  indicatorFormula String
+  plannedQuantity  Decimal
+  plannedValue     Decimal
+  instituition     Institution @relation(fields: [institutionId], references: [id])
+  actionPlan       ActionPlan  @relation(fields: [actionPlanId], references: [id])
+  item             Item        @relation(fields: [itemId], references: [id])
+
+  @@map("items_plans")
 }
