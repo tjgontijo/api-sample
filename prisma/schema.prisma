@@ -8,12 +8,13 @@ datasource db {
 }
 
 model State {
-  id        String @id @default(uuid())
-  shortName String
-  name      String
-  region    String
-  Plan      Plan[]
-  User      User[]
+  id         String   @id @default(uuid())
+  shortName  String
+  name       String
+  region     String
+  created_at DateTime @default(now())
+  Plan       Plan[]
+  User       User[]
 
   @@map(name: "states")
 }
@@ -21,6 +22,7 @@ model State {
 model Role {
   id                 String               @id @default(uuid())
   name               String
+  created_at         DateTime             @default(now())
   permissions        Permission[]         @relation("RoleToPermission")
   User               User[]
   RolesOnPermissions RolesOnPermissions[]
@@ -32,6 +34,7 @@ model Permission {
   id                 String               @id @default(uuid())
   resource           String
   permission         String
+  created_at         DateTime             @default(now())
   roles              Role[]               @relation("RoleToPermission")
   RolesOnPermissions RolesOnPermissions[]
   UserOnPermissions  UserOnPermissions[]
@@ -42,6 +45,7 @@ model Permission {
 model RolesOnPermissions {
   roleId       String
   permissionId String
+  created_at   DateTime   @default(now())
   role         Role       @relation(fields: [roleId], references: [id])
   permission   Permission @relation(fields: [permissionId], references: [id])
 
@@ -67,6 +71,7 @@ model User {
 model UserOnPermissions {
   permissionId String
   userId       String
+  created_at   DateTime   @default(now())
   permission   Permission @relation(fields: [permissionId], references: [id])
   user         User       @relation(fields: [userId], references: [id])
 
@@ -101,16 +106,18 @@ model NationalPlan {
   id               String             @id @default(uuid())
   name             String
   description      String
+  created_at       DateTime           @default(now())
   NationalPlanGoal NationalPlanGoal[]
 
   @@map("national_plans")
 }
 
 model NationalPlanGoal {
-  id             String @id @default(uuid())
+  id             String   @id @default(uuid())
   nationalPlanId String
   number         Int
   name           String
+  created_at     DateTime @default(now())
 
   nationalPlan NationalPlan @relation(fields: [nationalPlanId], references: [id])
   ActionPlan   ActionPlan[]
@@ -119,27 +126,29 @@ model NationalPlanGoal {
 }
 
 model TypeOfExpense {
-  id       String     @id @default(uuid())
-  name     String
-  ItemType ItemType[]
+  id         String   @id @default(uuid())
+  name       String
+  itemId     String
+  created_at DateTime @default(now())
+  item       Item     @relation(fields: [itemId], references: [id])
 
   @@map(name: "types_of_expenses")
 }
 
 model ItemType {
-  id              String        @id @default(uuid())
-  typeOfExpenseId String
-  name            String
-  typeOfExpense   TypeOfExpense @relation(fields: [typeOfExpenseId], references: [id])
-  ItemGroup       ItemGroup[]
+  id         String      @id @default(uuid())
+  name       String
+  created_at DateTime    @default(now())
+  ItemGroup  ItemGroup[]
 
   @@map(name: "items_types")
 }
 
 model ItemGroup {
-  id         String @id @default(uuid())
+  id         String   @id @default(uuid())
   itemTypeId String
   name       String
+  created_at DateTime @default(now())
 
   itemType  ItemType    @relation(fields: [itemTypeId], references: [id])
   ItemClass ItemClass[]
@@ -148,9 +157,10 @@ model ItemGroup {
 }
 
 model ItemClass {
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   itemGroupId String
   name        String
+  created_at  DateTime @default(now())
 
   itemGroup ItemGroup @relation(fields: [itemGroupId], references: [id])
   Item      Item[]
@@ -162,38 +172,43 @@ model Item {
   id            String          @id @default(uuid())
   itemClassId   String
   name          String
+  created_at    DateTime        @default(now())
   itemclass     ItemClass       @relation(fields: [itemClassId], references: [id])
   TechnicalNote TechnicalNote[]
   ItemPlan      ItemPlan[]
+  TypeOfExpense TypeOfExpense[]
 
   @@map(name: "items")
 }
 
 model TechnicalNote {
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   itemId      String
   name        String
   description String
-  item        Item   @relation(fields: [itemId], references: [id])
+  created_at  DateTime @default(now())
+  item        Item     @relation(fields: [itemId], references: [id])
 
   @@map("technical_notes")
 }
 
 model ImplementationStrategy {
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   diagnosis   String
   governance  String
   capacity    String
   acquisition String
+  created_at  DateTime @default(now())
   Plan        Plan[]
 
   @@map(name: "implementation_strategies")
 }
 
 model GeneralGoal {
-  id   String @id @default(uuid())
-  name String
-  Plan Plan[]
+  id         String   @id @default(uuid())
+  name       String
+  created_at DateTime @default(now())
+  Plan       Plan[]
 
   @@map(name: "general_goals")
 }
@@ -208,6 +223,7 @@ model Plan {
   justification            String
   overallGoal              String
   indicator                String
+  created_at               DateTime               @default(now())
   generalGoals             GeneralGoal            @relation(fields: [generalGoalId], references: [id])
   implementationStrategy   ImplementationStrategy @relation(fields: [implementationStrategyId], references: [id])
   state                    State                  @relation(fields: [stateId], references: [id])
@@ -218,9 +234,10 @@ model Plan {
 }
 
 model Institution {
-  id       String     @id @default(uuid())
-  name     String
-  ItemPlan ItemPlan[]
+  id         String     @id @default(uuid())
+  name       String
+  created_at DateTime   @default(now())
+  ItemPlan   ItemPlan[]
 
   @@map("institutions")
 }
@@ -229,6 +246,7 @@ model ActionPlan {
   id                 String           @id @default(uuid())
   planId             String
   nationalPlanGoalId String
+  created_at         DateTime         @default(now())
   plan               Plan             @relation(fields: [planId], references: [id])
   nationalPlanGoal   NationalPlanGoal @relation(fields: [nationalPlanGoalId], references: [id])
   ItemPlan           ItemPlan[]
@@ -247,6 +265,7 @@ model ItemPlan {
   indicatorFormula String
   plannedQuantity  Decimal
   plannedValue     Decimal
+  created_at       DateTime    @default(now())
   instituition     Institution @relation(fields: [institutionId], references: [id])
   actionPlan       ActionPlan  @relation(fields: [actionPlanId], references: [id])
   item             Item        @relation(fields: [itemId], references: [id])
