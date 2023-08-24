@@ -2,10 +2,17 @@ import fastify from 'fastify'
 import { appRoutes } from './http/routes'
 import { ZodError } from 'zod'
 import { env } from './env'
+import cors from '@fastify/cors'
 
 export const app = fastify()
 
 app.register(appRoutes)
+
+app.register(cors,{
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+})
 
 app.setErrorHandler((error, _, reply) => {
 
