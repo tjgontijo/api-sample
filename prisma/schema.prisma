@@ -23,34 +23,34 @@ model Role {
   id                 String               @id @default(uuid())
   name               String
   created_at         DateTime             @default(now())
-  permissions        Permission[]
   User               User[]
   RolesOnPermissions RolesOnPermissions[]
 
   @@map("roles")
 }
 
-model Permission {
-  id                 String               @id @default(uuid())
-  resource           String
-  permission         String
-  created_at         DateTime             @default(now())
-  roles              Role[]
-  RolesOnPermissions RolesOnPermissions[]
-  UserOnPermissions  UserOnPermissions[]
-
-  @@map("permissions")
-}
-
 model RolesOnPermissions {
   roleId       String
   permissionId String
-  created_at   DateTime   @default(now())
-  role         Role       @relation(fields: [roleId], references: [id])
-  permission   Permission @relation(fields: [permissionId], references: [id])
+  created_at   DateTime @default(now())
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
 
   @@id([roleId, permissionId])
   @@map("roles_on_permissions")
+}
+
+model Permission {
+  id         String   @id @default(uuid())
+  resource   String
+  permission String
+  created_at DateTime @default(now())
+
+  UserOnPermissions  UserOnPermissions[]
+  RolesOnPermissions RolesOnPermissions[]
+
+  @@map("permissions")
 }
 
 model User {
@@ -94,7 +94,9 @@ model ThematicArea {
 model Action {
   id             String   @id @default(uuid())
   thematicAreaId String
+  number         Int
   name           String   @unique
+  description    String
   created_at     DateTime @default(now())
 
   thematicArea ThematicArea @relation(fields: [thematicAreaId], references: [id])
@@ -206,6 +208,7 @@ model ImplementationStrategy {
 
 model GeneralGoal {
   id         String   @id @default(uuid())
+  number     Int
   name       String
   created_at DateTime @default(now())
   Plan       Plan[]
@@ -244,6 +247,7 @@ model Institution {
 
 model ActionPlan {
   id                 String           @id @default(uuid())
+  number             Int
   planId             String
   nationalPlanGoalId String
   created_at         DateTime         @default(now())
@@ -259,6 +263,7 @@ model ItemPlan {
   institutionId    String
   actionPlanId     String
   itemId           String
+  number           Int
   stateGoal        String
   indicator        String
   frequency        String
