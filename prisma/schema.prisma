@@ -23,7 +23,7 @@ model Role {
   id                 String               @id @default(uuid())
   name               String
   created_at         DateTime             @default(now())
-  permissions        Permission[]         @relation("RolesOnPermissions")
+  permissions        Permission[]
   User               User[]
   RolesOnPermissions RolesOnPermissions[]
 
@@ -35,7 +35,7 @@ model Permission {
   resource           String
   permission         String
   created_at         DateTime             @default(now())
-  roles              Role[]               @relation("RolesOnPermissions")
+  roles              Role[]
   RolesOnPermissions RolesOnPermissions[]
   UserOnPermissions  UserOnPermissions[]
 
