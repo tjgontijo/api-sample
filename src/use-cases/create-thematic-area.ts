@@ -2,8 +2,8 @@ import { ThematicAreasRepository } from '@/repositories/thematic-areas-repositor
 import { ThematicArea } from '@prisma/client'
 
 interface CreateThematicAreaUseCaseRequest {
-  name: string
-  short_name: string 
+    short_name: string 
+    name: string
 }
 interface CreateThematicAreaUseCaseResponse {
     thematicArea: ThematicArea 
