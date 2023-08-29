@@ -28,6 +28,8 @@ export class RegisterUseCase {
             name,
             email,
             password_hash,
+            roles: {},
+            state: {}
         })
         return {
             user,
