@@ -5,6 +5,12 @@ import { randomUUID } from 'node:crypto'
 export class InMemoryThematicAreasRepository implements ThematicAreasRepository {
     public items: ThematicArea[] = []
     
+    async findMany(): Promise<ThematicArea | null> {
+        const response = await this.items.find()
+        return response       
+    }
+    
+    
     async create(data: Prisma.ThematicAreaUncheckedCreateInput) {
         const thematicArea = {
             id: randomUUID(),
