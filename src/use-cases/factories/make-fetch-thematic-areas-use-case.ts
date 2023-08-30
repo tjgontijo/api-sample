@@ -1,4 +1,4 @@
-import { PrismaThematicAreasRepository } from '@/repositories/prisma/prisma-thematic-area-repository'
+import { PrismaThematicAreasRepository } from '@/repositories/prisma/prisma-thematic-areas-repository'
 import { FetchThematicAreaUseCase } from '../fetch-thematic-areas'
 
 export function makeFetchThematicAreaUseCase() {
