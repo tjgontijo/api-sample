@@ -9,8 +9,8 @@ datasource db {
 
 model State {
   id         String   @id @default(uuid())
-  shortName  String
-  name       String
+  shortName  String   @unique
+  name       String   @unique
   region     String
   created_at DateTime @default(now())
 
@@ -34,4 +34,21 @@ model ThematicArea {
   created_at DateTime @default(now())
 
   @@map("thematic_areas")
+}
+
+model Institution {
+  id         String   @id @default(uuid())
+  short_name String   @unique
+  name       String   @unique
+  created_at DateTime @default(now())
+
+  @@map("institutions")
+}
+
+model TypeOfExpense {
+  id         String   @id @default(uuid())
+  name       String   @unique
+  created_at DateTime @default(now())
+
+  @@map("types_of_expenses")
 }
