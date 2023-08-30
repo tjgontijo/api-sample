@@ -1,5 +1,5 @@
 import { CreateThematicAreaUseCase } from '../create-thematic-area'
-import { PrismaThematicAreasRepository } from '@/repositories/prisma/prisma-thematic-area-repository'
+import { PrismaThematicAreasRepository } from '@/repositories/prisma/prisma-thematic-areas-repository'
 
 export function makeCreateThematicAreaUseCase() {
     const thematicAreasRepository = new PrismaThematicAreasRepository()
