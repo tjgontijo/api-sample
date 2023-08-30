@@ -3,7 +3,7 @@ import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { ThematicAreasRepository } from '@/repositories/thematic-areas-repository'
 
 interface FetchThematicAreaUseCaseResponse {
-  thematicArea: ThematicArea
+  thematicArea: ThematicArea[]
 }
 
 export class FetchThematicAreaUseCase {
