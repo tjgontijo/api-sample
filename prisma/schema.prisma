@@ -38,9 +38,9 @@ model ThematicArea {
 
 model Institution {
   id         String   @id @default(uuid())
-  short_name String   @unique
   name       String   @unique
   created_at DateTime @default(now())
+  short_name String   @unique
 
   @@map("institutions")
 }
