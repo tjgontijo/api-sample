@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 
-import { InstituitionsRepository } from '../intituitions-repository copy'
+import { InstituitionsRepository } from '../intituitions-repository'
 
 export class PrismaInstituitionsRepository implements InstituitionsRepository {
    

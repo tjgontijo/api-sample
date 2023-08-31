@@ -1,6 +1,6 @@
 import { Institution } from '@prisma/client'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
-import { InstituitionsRepository } from '@/repositories/intituitions-repository copy'
+import { InstituitionsRepository } from '@/repositories/intituitions-repository'
 
 
 interface FetchinstItuitionUseCaseResponse {
