@@ -1,4 +1,4 @@
-import { makeFetchInstituitionsUseCase } from '@/use-cases/factories/make-instituitions-use-case'
+import { makeFetchInstituitionsUseCase } from '@/use-cases/factories/make-fetch-instituitions-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function fetchInstituitions(request: FastifyRequest, reply: FastifyReply) {
