@@ -35,6 +35,7 @@ model ThematicArea {
   short_name String   @unique
   name       String   @unique
   created_at DateTime @default(now())
+  Action     Action[]
 
   @@map("thematic_areas")
 }
@@ -54,4 +55,16 @@ model TypeOfExpense {
   created_at DateTime @default(now())
 
   @@map("types_of_expenses")
+}
+
+model Action {
+  id             String       @id @default(uuid())
+  thematicAreaId String
+  short_name     String
+  name           String
+  description    String?
+  created_at     DateTime     @default(now())
+  thematicArea   ThematicArea @relation(fields: [thematicAreaId], references: [id])
+
+  @@map("actions")
 }
