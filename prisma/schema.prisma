@@ -13,16 +13,19 @@ model State {
   name       String   @unique
   region     String
   created_at DateTime @default(now())
+  User       User[]
 
   @@map("states")
 }
 
 model User {
   id            String   @id @default(uuid())
+  stateId       String
   name          String
   email         String   @unique
   password_hash String
   created_at    DateTime @default(now())
+  state         State    @relation(fields: [stateId], references: [id])
 
   @@map("users")
 }
