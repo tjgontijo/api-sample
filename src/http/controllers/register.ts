@@ -13,8 +13,6 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
     const { stateId , name, email, password } = registerBodySchema.parse(request.body)
 
-    console.log(request.body)
-
     try {
         
         const registerUseCase = makeRegisterUseCase()
