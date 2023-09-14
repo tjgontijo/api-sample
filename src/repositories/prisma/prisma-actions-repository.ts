@@ -5,7 +5,9 @@ import { ActionsRepository } from '../actions-repository'
 export class PrismaActionsRepository implements ActionsRepository {
    
     async fetchAll(){        
-        const actions =  await prisma.action.findMany()
+        const actions =  await prisma.action.findMany({
+            include: {thematicArea: true}
+        })
         return actions
     }
 
