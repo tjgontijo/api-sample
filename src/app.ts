@@ -9,7 +9,7 @@ export const app = fastify()
 app.register(appRoutes)
 
 app.register(cors,{
-    origin: 'https://api-faf.onrender.com',
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 })
