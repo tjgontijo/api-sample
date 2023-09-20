@@ -15,6 +15,7 @@ app.register(cors,{
 })
 
 app.setErrorHandler((error, _, reply) => {
+    
 
     if (error instanceof ZodError){
         return reply
