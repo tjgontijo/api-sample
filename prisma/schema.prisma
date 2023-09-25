@@ -14,6 +14,7 @@ model State {
   region     String
   created_at DateTime @default(now())
   User       User[]
+  Plan       Plan[]
 
   @@map("states")
 }
@@ -36,6 +37,7 @@ model ThematicArea {
   name       String   @unique
   created_at DateTime @default(now())
   Action     Action[]
+  Plan       Plan[]
 
   @@map("thematic_areas")
 }
@@ -67,4 +69,21 @@ model Action {
   thematicArea   ThematicArea @relation(fields: [thematicAreaId], references: [id])
 
   @@map("actions")
+}
+
+model Plan {
+  id                                String       @id @default(uuid())
+  stateId                           String
+  thematicAreaId                    String
+  year                              Int
+  diagnosis                         String
+  justification                     String
+  generalGoal                       String
+  implementationStrategy            String
+  diagnosticImplementationStrategy  String
+  governanceImplementationStrategy  String
+  capacityImplementationStrategy    String
+  acquisitionImplementationStrategy String
+  state                             State        @relation(fields: [stateId], references: [id])
+  thematicArea                      ThematicArea @relation(fields: [thematicAreaId], references: [id])
 }
