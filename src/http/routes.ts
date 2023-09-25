@@ -7,14 +7,14 @@ import { fetchInstituitions } from './controllers/fetch-instituitions'
 import { fetchStates } from './controllers/fetch-states'
 import { createAction } from './controllers/create-action'
 import { fetchActions } from './controllers/fetch-actions'
-import { actionPlans } from './controllers/request-action-plans'
+import { createPlan } from './controllers/create-plan'
 
 
 export async function appRoutes(app: FastifyInstance) {
     app.post('/users', register)
     app.post('/sessions', authenticate)
     app.post('/actions', createAction)
-    app.post('/action-plans', actionPlans)
+    app.post('/action-plans', createPlan)
     app.post('/thematic_area', createThematicArea)
     app.get('/thematic_area', fetchThematicArea)
     app.get('/instituition', fetchInstituitions)
