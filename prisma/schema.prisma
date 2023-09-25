@@ -75,7 +75,7 @@ model Plan {
   id                                String       @id @default(uuid())
   stateId                           String
   thematicAreaId                    String
-  year                              Int
+  year                              String
   diagnosis                         String
   justification                     String
   generalGoal                       String
