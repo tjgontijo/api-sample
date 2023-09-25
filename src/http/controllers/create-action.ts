@@ -11,7 +11,7 @@ export async function createAction(request: FastifyRequest, reply: FastifyReply)
     })
 
     const { thematicAreaId, short_name, name, description } = createThematicAreasBodySchema.parse(request.body)
-    console.log(request.body)
+    
     try {
 
         const createActionUseCase = makeCreateActionUseCase()
