@@ -1,9 +1,10 @@
-import { PrismaActionsRepository } from '@/repositories/prisma/prisma-actions-repository'
-import { CreateActionUseCase } from '../create-action'
+import { PrismaPlanRepository } from '@/repositories/prisma/prisma-plan-repository'
+import { CreatePlanUseCase } from '../create-plan'
 
-export function makeCreateActionUseCase() {
-    const actionRepository = new PrismaActionsRepository()
-    const createAction = new CreateActionUseCase(actionRepository)
-
-    return createAction
+export function makeCreatePlanUseCase() {
+    
+    const planRepository = new PrismaPlanRepository()
+    const createPlan = new CreatePlanUseCase(planRepository)
+    
+    return createPlan
 }
