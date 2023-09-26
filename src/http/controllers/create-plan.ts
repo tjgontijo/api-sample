@@ -1,4 +1,4 @@
-import { makeCreatePlanUseCase } from '@/use-cases/factories/make-create-action-use-case'
+import { makeCreatePlanUseCase } from '@/use-cases/factories/make-create-plan-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -35,8 +35,8 @@ export async function createPlan(request: FastifyRequest, reply: FastifyReply) {
         const createPlanUseCase = makeCreatePlanUseCase()
 
         const createPlanRequest = {
-            stateId: state,
-            thematicAreaId: thematicArea,
+            state,
+            thematicArea,
             year,
             diagnosis,
             justification,
