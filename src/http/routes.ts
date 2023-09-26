@@ -8,6 +8,7 @@ import { fetchStates } from './controllers/fetch-states'
 import { createAction } from './controllers/create-action'
 import { fetchActions } from './controllers/fetch-actions'
 import { createPlan } from './controllers/create-plan'
+import { fetchPlans } from './controllers/fetch-plans'
 
 
 export async function appRoutes(app: FastifyInstance) {
@@ -20,4 +21,5 @@ export async function appRoutes(app: FastifyInstance) {
     app.get('/instituition', fetchInstituitions)
     app.get('/states', fetchStates)
     app.get('/actions', fetchActions)
+    app.get('/plan', fetchPlans)
 }
