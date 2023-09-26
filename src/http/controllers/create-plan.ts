@@ -53,6 +53,7 @@ export async function createPlan(request: FastifyRequest, reply: FastifyReply) {
         if (err instanceof z.ZodError) {
             return reply.status(400).send({ message: err.message })
         } else {
+            console.log(err)
             return reply.status(500).send({ message: 'Erro interno do servidor' })
         }
     }
