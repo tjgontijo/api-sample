@@ -13,19 +13,19 @@ model State {
   name       String   @unique
   region     String
   created_at DateTime @default(now())
-  User       User[]
   Plan       Plan[]
+  User       User[]
 
   @@map("states")
 }
 
 model User {
   id            String   @id @default(uuid())
-  stateId       String
   name          String
   email         String   @unique
   password_hash String
   created_at    DateTime @default(now())
+  stateId       String
   state         State    @relation(fields: [stateId], references: [id])
 
   @@map("users")
@@ -36,8 +36,8 @@ model ThematicArea {
   short_name String   @unique
   name       String   @unique
   created_at DateTime @default(now())
-  Action     Action[]
   Plan       Plan[]
+  Action     Action[]
 
   @@map("thematic_areas")
 }
@@ -64,8 +64,8 @@ model Action {
   thematicAreaId String
   short_name     String
   name           String
-  description    String?
   created_at     DateTime     @default(now())
+  description    String?
   thematicArea   ThematicArea @relation(fields: [thematicAreaId], references: [id])
 
   @@map("actions")
@@ -86,4 +86,6 @@ model Plan {
   acquisitionImplementationStrategy String
   state                             State        @relation(fields: [stateId], references: [id])
   thematicArea                      ThematicArea @relation(fields: [thematicAreaId], references: [id])
+
+  @@map("plans")
 }
