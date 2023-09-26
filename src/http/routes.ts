@@ -14,7 +14,7 @@ export async function appRoutes(app: FastifyInstance) {
     app.post('/users', register)
     app.post('/sessions', authenticate)
     app.post('/actions', createAction)
-    app.post('/action-plans', createPlan)
+    app.post('/plan', createPlan)
     app.post('/thematic_area', createThematicArea)
     app.get('/thematic_area', fetchThematicArea)
     app.get('/instituition', fetchInstituitions)
